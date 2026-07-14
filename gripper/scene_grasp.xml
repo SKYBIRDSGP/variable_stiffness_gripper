@@ -1,5 +1,5 @@
 <mujoco model="tendon_gripper">
-  <compiler angle="radian" meshdir="../../high_fidelity/meshes" autolimits="true"/>
+  <compiler angle="radian" meshdir="../../underactuated-hand-sim/high_fidelity/meshes" autolimits="true"/>
   <option timestep="0.00025" integrator="implicitfast"
           gravity="0 0 -9.81" cone="elliptic" impratio="10.0"/>
   <default>

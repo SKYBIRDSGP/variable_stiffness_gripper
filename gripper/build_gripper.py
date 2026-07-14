@@ -4,8 +4,8 @@ import numpy as np
 from scipy.spatial.transform import Rotation as Rot
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
-_REPO = os.path.abspath(os.path.join(_HERE, "..", ".."))
-sys.path.insert(0, _REPO)
+_REPO = os.path.abspath(os.path.join(os.path.expanduser("~"), "underactuated-hand-sim"))
+sys.path.insert(0, _HERE)
 import config
 
 MM = 1e-3

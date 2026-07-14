@@ -4,9 +4,8 @@ import tkinter as tk
 from tkinter import ttk
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(_HERE, "..", ".."))
 import config
-from franka_gripper.gripper.build_gripper import build
+from build_gripper import build
 import mujoco
 import mujoco.viewer
 
@@ -147,7 +146,7 @@ pos_label.pack()
 
 def update_pos():
     with lock:
-        p = data.body("sphere").xpos
+        p = data.body("cube").xpos
     pos_label.config(text=f"x = {p[0]:.4f}   y = {p[1]:.4f}   z = {p[2]:.4f}")
     root.after(50, update_pos)
 
