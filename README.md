@@ -75,8 +75,12 @@ python franka_tendon_ee/pick_place_tendon.py
 |---------|------|-------------|
 | ![gripper](image_assets/gripper.png) | `image_assets/gripper.png` | Tendon gripper grasping a cube |
 | ![franka](image_assets/franka_dashboard.png) | `image_assets/franka_dashboard.png` | Franka dashboard UI |
-| — | `video_assets/TENDON_GRIPPER_PICK_PLACE.mp4` | Tendon gripper pick-and-place demo |
-| — | `video_assets/FRANKA_PICK_PLACE.mp4` | Franka arm pick-and-place demo |
+
+### Videos
+
+<video src="video_assets/TENDON_GRIPPER_PICK_PLACE.mp4" controls width="600"></video>
+<br>
+<video src="video_assets/FRANKA_PICK_PLACE.mp4" controls width="600"></video>
 
 ## Literature Review
 
