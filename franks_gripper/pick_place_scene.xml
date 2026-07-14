@@ -1,0 +1,64 @@
+<mujoco model="franka_pick_place">
+  <include file="panda.xml"/>
+
+  <visual>
+    <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0"/>
+    <rgba haze="0.15 0.25 0.35 1"/>
+    <global azimuth="120" elevation="-20"/>
+  </visual>
+
+  <asset>
+    <texture type="skybox" builtin="gradient" rgb1="0.3 0.5 0.7" rgb2="0 0 0" width="512" height="3072"/>
+    <texture type="2d" name="groundplane" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3"
+      markrgb="0.8 0.8 0.8" width="300" height="300"/>
+    <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5" reflectance="0.2"/>
+  </asset>
+
+  <worldbody>
+    <light pos="0 0 1.5" dir="0 0 -1" directional="true"/>
+    <!-- floor -->
+    <geom name="floor" size="0 0 0.05" type="plane" material="groundplane"/>
+
+    <!-- small platform to raise the sphere (150 mm tall) -->
+    <body name="table" pos="0.50 0.0 0.0">
+      <geom type="box" size="0.05 0.05 0.075" rgba="0.4 0.3 0.2 1"
+            solimp="0.95 0.99 0.001" solref="0.005 1"/>
+    </body>
+
+    <!-- sphere to pick — 50 mm diameter, on the platform -->
+    <body name="sphere" pos="0.50 0.0 0.100" childclass="panda">
+      <freejoint/>
+      <geom name="sphere_geom" type="sphere" size="0.025" mass="0.15"
+            friction="0.8 0.005 0.0001"
+            rgba="0.2 0.7 1.0 1" solimp="0.99 0.999 0.001" solref="0.001 1"/>
+    </body>
+
+    <!-- bucket — thin-walled box without top, placed to the side -->
+    <body name="bucket" pos="0.30 -0.40 0.0">
+      <!-- bottom -->
+      <geom type="box" size="0.075 0.075 0.002" pos="0 0 0.002"
+            rgba="0.35 0.25 0.15 1" solimp="0.95 0.99 0.001" solref="0.005 1"/>
+      <!-- front wall (at +X) -->
+      <geom type="box" size="0.002 0.075 0.05" pos="0.075 0 0.052"
+            rgba="0.35 0.25 0.15 1"/>
+      <!-- back wall (at -X) -->
+      <geom type="box" size="0.002 0.075 0.05" pos="-0.075 0 0.052"
+            rgba="0.35 0.25 0.15 1"/>
+      <!-- left wall (at +Y) -->
+      <geom type="box" size="0.075 0.002 0.05" pos="0 0.075 0.052"
+            rgba="0.35 0.25 0.15 1"/>
+      <!-- right wall (at -Y) -->
+      <geom type="box" size="0.075 0.002 0.05" pos="0 -0.075 0.052"
+            rgba="0.35 0.25 0.15 1"/>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <position name="grip_left" joint="finger_joint1" kp="500" kv="50" forcerange="-100 100" ctrllimited="true" ctrlrange="0 0.04"/>
+    <position name="grip_right" joint="finger_joint2" kp="500" kv="50" forcerange="-100 100" ctrllimited="true" ctrlrange="0 0.04"/>
+  </actuator>
+
+  <equality>
+    <weld name="fix_sphere" body1="world" body2="sphere" solref="0.001 1" active="false"/>
+  </equality>
+</mujoco>
