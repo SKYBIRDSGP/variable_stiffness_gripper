@@ -1,0 +1,115 @@
+<mujoco model="tendon_gripper">
+  <compiler angle="radian" meshdir="../../high_fidelity/meshes" autolimits="true"/>
+  <option timestep="0.00025" integrator="implicitfast"
+          gravity="0 0 -9.81" cone="elliptic" impratio="10.0"/>
+  <default>
+    <geom condim="6" friction="2.0 2.0 0.05"
+          solref="0.0005 1" solimp="0.99 0.9999 0.0001 0.5 2" density="0"/>
+    <joint type="hinge" axis="0 0 1" damping="0.08" limited="true"
+           solreflimit="0.002 1" solimplimit="0.99 0.9999 0.0001 0.5 2"/>
+    <default class="phalanx">
+      <geom type="mesh" rgba="0.78 0.80 0.85 1" contype="1" conaffinity="1" solref="0.008 0.5" solimp="0.3 0.9 0.01 0.3 2"/>
+    </default>
+    <site group="3"/>
+  </default>
+  <asset>
+    <mesh name="proximal_mesh" file="proximal.stl"/>
+    <mesh name="middle_mesh"   file="middle.stl"/>
+    <mesh name="distal_mesh"   file="distal.stl"/>
+    <texture type="skybox" builtin="gradient" rgb1="0.3 0.5 0.7" rgb2="0 0 0"
+             width="512" height="3072"/>
+    <texture type="2d" name="groundplane" builtin="checker" mark="edge"
+             rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3" markrgb="0.8 0.8 0.8"
+             width="300" height="300"/>
+    <material name="groundplane" texture="groundplane" texuniform="true"
+              texrepeat="5 5" reflectance="0.2"/>
+  </asset>
+  <worldbody>
+    <light name="top" pos="0 0 2" mode="trackcom"/>
+    <light pos="0 0 1.5" dir="0 0 -1" directional="true"/>
+    <geom name="floor" size="0 0 0.05" type="plane" material="groundplane"/>
+
+    <body name="gripper" pos="0 0 0.015000" quat="0.707107 0.000000 0.707107 0.000000">
+    
+    <body name="a_base" pos="0.000000 0.055000 0.065000" quat="0.707107 0.000000 0.707107 0.000000">
+      <geom type="box" size="0.010000 0.010000 0.007500" pos="0.022500 0 0"
+            rgba="0.30 0.30 0.33 1" contype="0" conaffinity="0" density="0" mass="0"/>
+
+      <body name="a_proximal" pos="0.012500 0.000000 0.000000">
+        <joint name="a_mcp" stiffness="1.0" damping="0.08" range="-0.52360 1.57080"/>
+        <inertial pos="-0.026251 0.000034 -0.000000" mass="0.020000" fullinertia="1.215421e-06 4.532059e-06 4.431324e-06 2.072062e-08 1.045668e-13 -6.640057e-15"/>
+        <geom class="phalanx" mesh="proximal_mesh"/>
+
+        <body name="a_middle" pos="-0.055500 0.000000 0.000000">
+          <joint name="a_pip" stiffness="1.0" damping="0.08" range="-0.52360 1.57080"/>
+          <inertial pos="-0.020253 0.000089 -0.000000" mass="0.016900" fullinertia="5.818377e-07 1.279118e-06 1.195905e-06 8.658681e-09 3.662567e-14 -3.664415e-15"/>
+          <geom class="phalanx" mesh="middle_mesh"/>
+
+          <body name="a_distal" pos="-0.041600 0.000000 0.000000">
+            <joint name="a_dip" stiffness="1.0" damping="0.08" range="-0.52360 1.57080"/>
+            <inertial pos="-0.016047 -0.000800 0.000000" mass="0.013700" fullinertia="3.462849e-07 5.280969e-07 4.537598e-07 -4.185637e-08 -5.976719e-15 -1.203437e-14"/>
+            <geom class="phalanx" mesh="distal_mesh"/>
+            <site name="a_tip" pos="-0.035799 0.000000 0.000000" size="0.001" rgba="0.2 0.7 0.95 1"/>
+          </body>
+        </body>
+      </body>
+    </body>
+    
+    <body name="b_base" pos="0.000000 -0.055000 0.065000" quat="0.000000 -0.707107 0.000000 0.707107">
+      <geom type="box" size="0.010000 0.010000 0.007500" pos="0.022500 0 0"
+            rgba="0.30 0.30 0.33 1" contype="0" conaffinity="0" density="0" mass="0"/>
+
+      <body name="b_proximal" pos="0.012500 0.000000 0.000000">
+        <joint name="b_mcp" stiffness="1.0" damping="0.08" range="-0.52360 1.57080"/>
+        <inertial pos="-0.026251 0.000034 -0.000000" mass="0.020000" fullinertia="1.215421e-06 4.532059e-06 4.431324e-06 2.072062e-08 1.045668e-13 -6.640057e-15"/>
+        <geom class="phalanx" mesh="proximal_mesh"/>
+
+        <body name="b_middle" pos="-0.055500 0.000000 0.000000">
+          <joint name="b_pip" stiffness="1.0" damping="0.08" range="-0.52360 1.57080"/>
+          <inertial pos="-0.020253 0.000089 -0.000000" mass="0.016900" fullinertia="5.818377e-07 1.279118e-06 1.195905e-06 8.658681e-09 3.662567e-14 -3.664415e-15"/>
+          <geom class="phalanx" mesh="middle_mesh"/>
+
+          <body name="b_distal" pos="-0.041600 0.000000 0.000000">
+            <joint name="b_dip" stiffness="1.0" damping="0.08" range="-0.52360 1.57080"/>
+            <inertial pos="-0.016047 -0.000800 0.000000" mass="0.013700" fullinertia="3.462849e-07 5.280969e-07 4.537598e-07 -4.185637e-08 -5.976719e-15 -1.203437e-14"/>
+            <geom class="phalanx" mesh="distal_mesh"/>
+            <site name="b_tip" pos="-0.035799 0.000000 0.000000" size="0.001" rgba="0.2 0.7 0.95 1"/>
+          </body>
+        </body>
+      </body>
+    </body>
+
+    <body name="mount_block" pos="0 0 0.017500">
+      <geom type="box" size="0.015000 0.060000 0.015000" rgba="0.25 0.25 0.28 1"
+            contype="0" conaffinity="0" density="0" mass="0"/>
+    </body>
+    </body>
+  
+    <body name="cube" pos="0 0 0.0175">
+      <joint name="slide_x" type="slide" axis="1 0 0" limited="true" range="-0.05 0.25"
+             stiffness="0" damping="0.5"/>
+      <geom type="box" size="0.0175 0.0175 0.0175" rgba="0.2 0.6 0.9 1" mass="0.010"
+            friction="0.5 0.1 0.01"/>
+    </body>
+  </worldbody>
+  <tendon>
+    <fixed name="a_flexor" stiffness="100000.0" damping="6.0" springlength="-1">
+      <joint joint="a_mcp" coef="-0.007"/>
+      <joint joint="a_pip" coef="-0.007"/>
+      <joint joint="a_dip" coef="-0.007"/>
+    </fixed>
+    <fixed name="b_flexor" stiffness="100000.0" damping="6.0" springlength="-1">
+      <joint joint="b_mcp" coef="-0.007"/>
+      <joint joint="b_pip" coef="-0.007"/>
+      <joint joint="b_dip" coef="-0.007"/>
+    </fixed>
+  </tendon>
+  <contact>
+    <exclude body1="a_proximal" body2="a_middle"/>
+    <exclude body1="a_middle" body2="a_distal"/>
+    <exclude body1="a_proximal" body2="a_distal"/>
+    <exclude body1="b_proximal" body2="b_middle"/>
+    <exclude body1="b_middle" body2="b_distal"/>
+    <exclude body1="b_proximal" body2="b_distal"/>
+  </contact>
+</mujoco>
